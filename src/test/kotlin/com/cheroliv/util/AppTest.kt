@@ -11,6 +11,12 @@ import kotlin.test.*
 
 private val log = KotlinLogging.logger {}
 
+// find ~ -type d -name node_modules
+// locate *node_modules  > node_modules_file_paths.txt
+//        print(find(
+//                INSTANCE.d,
+//                System.getProperty("user.home")+ "/src",
+//                MOTIF_FILENAME).toStringResult())
 class AppTest {
 
     companion object {
@@ -20,8 +26,10 @@ class AppTest {
         @JvmStatic
         fun setup() {
             val resultFile = File(RESULT_FILENAME)
+            val filterFile = File("result.txt")
             when {
                 !resultFile.exists() -> resultFile.createNewFile()
+                filterFile.exists() -> filterFile.delete()
             }
             App().builder(RESULT_FILENAME, MOTIF_FILENAME)
         }
@@ -68,17 +76,5 @@ class AppTest {
             if (it.isBlank() || it.isEmpty())
                 assertEquals(1, it.split(MOTIF_FILENAME).size - 1)
         }
-    }
-
-
-    fun testSth() {
-        // find ~ -type d -name node_modules
-        // locate *node_modules  > node_modules_file_paths.txt
-//        print(find(
-//                INSTANCE.d,
-//                System.getProperty("user.home")+ "/src",
-//                MOTIF_FILENAME).toStringResult())
-
-
     }
 }
