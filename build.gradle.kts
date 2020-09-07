@@ -35,3 +35,12 @@ application {
     // Define the main class for the application.
     mainClassName = "com.cheroliv.util.AppKt"
 }
+//copy jar to project root directory
+// to execute from project root directory
+project.tasks {
+    jar {
+        doLast {
+            File("build/libs/deleteDir.jar").copyTo(File("deleteDir.jar"), true)
+        }
+    }
+}
