@@ -28,8 +28,11 @@ class App {
                 // 1) `paths after home not start with dot`
                 // 2) `paths contains only time MOTIF_FILENAME`
                 pathsSequence.forEach {
-                    if (!isPathStartWithDotAfterHome(it) && isPathContainsMotifOnce(it)) {
-                        //put this path in the result file
+                    when {
+                        !isPathStartWithDotAfterHome(it)
+                                && isPathContainsMotifOnce(it) -> {
+                            //put this path in the result file
+                        }
                     }
                 }
 
