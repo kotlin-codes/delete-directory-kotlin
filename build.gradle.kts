@@ -39,8 +39,12 @@ application {
 // to execute from project root directory
 project.tasks {
     jar {
+        manifest {
+            attributes["Main-Class"]="com.cheroliv.util.AppKt"
+        }
         doLast {
             File("build/libs/deleteDir.jar").copyTo(File("deleteDir.jar"), true)
         }
+
     }
 }
