@@ -70,4 +70,12 @@ class AppTest {
                 assertEquals(1, it.split(MOTIF_FILENAME).size - 1)
         }
     }
+
+    @Test
+    fun test_isPathContainsMotifOnce() {
+    }
+
+    @Test
+    fun test_isPathStartWithDotAfterHome() {
+    }
 }
