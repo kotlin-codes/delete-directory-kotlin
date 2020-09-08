@@ -51,6 +51,10 @@ class AppTest {
 
     @Test
     @Ignore//test le retour de builder
+            //    App().builder(App().readFile(RESULT_FILEPATH), MOTIF_FILENAME).forEach {
+            //        assert(!it.replace(USER_HOME_PATH + File.separator, "")
+            //                .startsWith('.'))
+            //    }
     fun `paths after home not start with dot`() {
         File(FILTER_FILEPATH)
                 .readText(UTF_8)
