@@ -20,14 +20,17 @@ class App {
         const val RESULT_FILEPATH: String = "src/test/resources/node_modules_file_paths.txt"
         const val MOTIF_FILENAME: String = "node_modules"
     }
+
     //1
-    fun readFile(path:String)/*:Sequence<String>*/{
+    fun readFile(path: String)/*:Sequence<String>*/ {
 
     }
-//3
-    fun deleteFiles(paths:Sequence<String>){
+
+    //3
+    fun deleteFiles(paths: Sequence<String>) {
 
     }
+
     //2
     // recupere le result linesequence et renvoi le filter linesequence
     fun builder(path: String/*paths:Sequence<String>*/, motif: String)/*:Sequence<String>*/ {
@@ -35,7 +38,7 @@ class App {
         when {
             pathsFile.exists() && pathsFile.isFile -> {
                 val pathsSequence = pathsFile.readText(UTF_8).lineSequence()
-                val filterFile=File(FILTER_FILEPATH)
+                val filterFile = File(FILTER_FILEPATH)
                 // for ((index, value) in pathsSequence.withIndex()) {
                 //println("The element at $index is $value")
                 //}
