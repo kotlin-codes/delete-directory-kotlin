@@ -1,7 +1,6 @@
 package com.cheroliv.util
 
-// import org.unix4j.Unix4j.find
-// import org.unix4j.unix.find.FindOptionSets.INSTANCE
+
 import com.cheroliv.util.App.Companion.KEEP
 import com.cheroliv.util.App.Companion.LOCATE_CMD_FILEPATH
 import com.cheroliv.util.App.Companion.MOTIF_FILENAME
@@ -14,15 +13,6 @@ import kotlin.test.assertFalse
 
 private val log = KotlinLogging.logger {}
 
-// pass password for sudo command
-// echo mypassword | sudo -S command
-//
-// find ~ -type d -name node_modules
-// locate *node_modules  > node_modules_file_paths.txt
-//        print(find(
-//                INSTANCE.d,
-//                System.getProperty("user.home")+ "/src",
-//                MOTIF_FILENAME).toStringResult())
 class AppTest {
 
     companion object {

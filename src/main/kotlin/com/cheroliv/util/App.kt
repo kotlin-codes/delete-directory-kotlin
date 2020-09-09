@@ -1,5 +1,7 @@
 package com.cheroliv.util
 
+import org.unix4j.Unix4j.find
+import org.unix4j.unix.find.FindOptionSets.INSTANCE
 import com.cheroliv.util.App.Companion.KEEP
 import com.cheroliv.util.App.Companion.MOTIF_FILENAME
 import com.cheroliv.util.App.Companion.LOCATE_CMD_FILEPATH
@@ -22,6 +24,15 @@ fun main() {
             MOTIF_FILENAME,
             KEEP)
     deleteFiles(filteredPaths)
+}
+
+// pass password for sudo command
+// echo mypassword | sudo -S command
+//
+// find ~ -type d -name node_modules
+// locate *node_modules  > node_modules_file_paths.txt
+fun findFile(path: String, motif: String): Sequence<String> {
+    return find(INSTANCE.d, path, motif).toString().lineSequence()
 }
 
 fun readFile(path: String): Sequence<String> {
