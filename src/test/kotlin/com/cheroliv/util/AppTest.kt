@@ -1,15 +1,16 @@
 package com.cheroliv.util
 
-import com.cheroliv.util.App.Companion.FILTER_FILEPATH
-import com.cheroliv.util.App.Companion.MOTIF_FILENAME
-import com.cheroliv.util.App.Companion.RESULT_FILEPATH
-import mu.KotlinLogging
-import org.junit.BeforeClass
 // import org.unix4j.Unix4j.find
 // import org.unix4j.unix.find.FindOptionSets.INSTANCE
+import com.cheroliv.util.App.Companion.KEEP
+import com.cheroliv.util.App.Companion.LOCATE_CMD_FILEPATH
+import com.cheroliv.util.App.Companion.MOTIF_FILENAME
+import mu.KotlinLogging
+import org.junit.BeforeClass
 import java.io.File
-import kotlin.test.*
-import kotlin.text.Charsets.UTF_8
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 private val log = KotlinLogging.logger {}
 
@@ -31,58 +32,84 @@ class AppTest {
         @JvmStatic
         fun setup() {
             // Ensure my set of data is available
-            assert(File(RESULT_FILEPATH).exists())
-            if (!File(FILTER_FILEPATH).exists()) File(FILTER_FILEPATH).createNewFile()
-            App().builder(RESULT_FILEPATH, MOTIF_FILENAME)
+            val file = File(LOCATE_CMD_FILEPATH)
+            assert(file.exists())
+            assertFalse(file.isDirectory)
+            assert(file.isFile)
+            assert(file.readText(Charsets.UTF_8).lineSequence().count() > 1)
         }
     }
 
-    @Test//test le retour de builder
-    fun `paths end with MOTIF_FILENAME or empty`() {
-        File(FILTER_FILEPATH)
-                .readText(UTF_8)
-                .lineSequence()
-                .forEach {
-                    assert(it.contains(MOTIF_FILENAME) ||
-                            it.isEmpty() ||
-                            it.isBlank())
-                }
+    @Test
+    fun `paths end with MOTIF_FILENAME`() {
+        val paths = readFile(LOCATE_CMD_FILEPATH)
+        val filteredPaths = filterPathSequence(paths, MOTIF_FILENAME, KEEP)
+        assert(filteredPaths.count() > 0) { "filtered paths should not be empty!" }
+        filteredPaths.forEach {
+            assert(it.contains(MOTIF_FILENAME))
+        }
     }
 
     @Test
-    @Ignore//test le retour de builder
-    //    App().builder(App().readFile(RESULT_FILEPATH), MOTIF_FILENAME).forEach {
-    //        assert(!it.replace(USER_HOME_PATH + File.separator, "")
-    //                .startsWith('.'))
-    //    }
     fun `paths after home not start with dot`() {
-        File(FILTER_FILEPATH)
-                .readText(UTF_8)
-                .lineSequence()
-                .forEach {
-                    assert(!it.replace(USER_HOME_PATH + File.separator, "")
-                            .startsWith('.'))
-                }
-    }
-
-    @Test
-    @Ignore//test le retour de builder
-    fun `paths contains only time MOTIF_FILENAME`() {
-        File(FILTER_FILEPATH).readText(UTF_8).lineSequence().forEach {
-            if (it.isBlank() || it.isEmpty())
-                assertEquals(1, it.split(MOTIF_FILENAME).size - 1)
+        val paths = readFile(LOCATE_CMD_FILEPATH)
+        val filteredPaths = filterPathSequence(paths, MOTIF_FILENAME, KEEP)
+        filteredPaths.forEach {
+            assert(!it.replace(USER_HOME_PATH + File.separator, "")
+                    .startsWith('.'))
         }
     }
 
-    @Test//test le retour de builder
-    fun `build folder path cannot be in FILTER_FILEPATH`() {
+    @Test
+    fun `paths contains only once MOTIF_FILENAME`() {
+        val paths = readFile(LOCATE_CMD_FILEPATH)
+        val filteredPaths = filterPathSequence(paths, MOTIF_FILENAME, KEEP)
+        filteredPaths.forEach {
+            assertEquals(1, it.split(MOTIF_FILENAME).size - 1)
+        }
     }
 
-    @Test//test le retour de builder
+    @Test
+    fun `paths must be in the home directory`() {
+        val paths = readFile(LOCATE_CMD_FILEPATH)
+        val filteredPaths = filterPathSequence(paths, MOTIF_FILENAME, KEEP)
+        filteredPaths.forEach {
+            assert(it.startsWith(USER_HOME_PATH))
+        }
+    }
+
+    @Test
+    fun `paths don't contains KEEP`() {
+        val paths = readFile(LOCATE_CMD_FILEPATH)
+        val filteredPaths = filterPathSequence(paths, MOTIF_FILENAME, KEEP)
+        var isFoundKeepItem = false
+        loop1@ for (pathTokeep in KEEP) {
+            loop2@ for (path in filteredPaths) {
+                if (path == pathTokeep) {
+                    isFoundKeepItem = true
+                    break@loop1
+                }
+            }
+        }
+        assertFalse(isFoundKeepItem)
+    }
+
+    @Test
     fun `test method isPathContainsMotifOnce()`() {
+        val path = "/home/cheroliv/Téléchargements/React-Portfolio-master/node_modules"
+        assert(isPathContainsMotifOnce(path, MOTIF_FILENAME))
+        assertFalse(isPathContainsMotifOnce(path.replace(
+                File.separator + MOTIF_FILENAME, ""),
+                MOTIF_FILENAME))
     }
 
-    @Test//test le retour de builder
+
+    @Test
     fun `test method isPathStartWithDotAfterHome()`() {
+        var path = "/home/cheroliv/Téléchargements/React-Portfolio-master/node_modules"
+        assertFalse(isPathStartWithDotAfterHome(path))
+        path = "/home/cheroliv/.nvm/versions/node/v12.18.2/lib/node_modules"
+        assert(isPathStartWithDotAfterHome(path))
     }
+
 }

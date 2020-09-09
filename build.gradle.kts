@@ -29,6 +29,9 @@ dependencies {
 
     // Unix command
     implementation("org.unix4j:unix4j-command:0.5")
+
+    // Apache Common to handle string
+    implementation("org.apache.commons:commons-lang3:3.11")
 }
 
 application {
@@ -36,8 +39,6 @@ application {
     mainClassName = "com.cheroliv.util.AppKt"
 }
 
-//copy jar to project root directory
-// to execute from project root directory
 project.tasks {
     jar {
         manifest {
