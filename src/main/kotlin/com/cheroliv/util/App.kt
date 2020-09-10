@@ -8,9 +8,11 @@ import com.cheroliv.util.App.Companion.LOCATE_CMD_FILEPATH
 import org.apache.commons.lang3.StringUtils
 import java.io.File
 import kotlin.text.Charsets.UTF_8
-
+// pass password for sudo command
+// echo mypassword | sudo -S command
 class App {
     companion object {
+        // locate *node_modules  > node_modules_file_paths.txt
         const val LOCATE_CMD_FILEPATH = "src/test/resources/node_modules_file_paths.txt"
         const val MOTIF_FILENAME = "node_modules"
         val KEEP = arrayOf("/home/cheroliv/src/deleteDir/build")
@@ -26,11 +28,9 @@ fun main() {
     deleteFiles(filteredPaths)
 }
 
-// pass password for sudo command
-// echo mypassword | sudo -S command
-//
-// find ~ -type d -name node_modules
-// locate *node_modules  > node_modules_file_paths.txt
+/**
+ * find ~ -type d -name node_module
+ */
 fun findFile(path: String, motif: String): Sequence<String> {
     return find(INSTANCE.d, path, motif).toString().lineSequence()
 }
@@ -65,10 +65,10 @@ fun isPathContainsMotifOnce(path: String, motif: String): Boolean {
 }
 
 fun isPathStartWithDotAfterHome(path: String): Boolean {
-    val userHomepath = System.getProperty("user.home")
-    return path.contains(userHomepath) &&
-            path.startsWith(userHomepath + File.separator) &&
-            path.replace(userHomepath + File.separator, "")
+    val userHomePath = System.getProperty("user.home")
+    return path.contains(userHomePath) &&
+            path.startsWith(userHomePath + File.separator) &&
+            path.replace(userHomePath + File.separator, "")
                     .startsWith(".")
 }
 
