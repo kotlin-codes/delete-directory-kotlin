@@ -65,10 +65,10 @@ fun isPathContainsMotifOnce(path: String, motif: String): Boolean {
 }
 
 fun isPathStartWithDotAfterHome(path: String): Boolean {
-    val userHomepath = System.getProperty("user.home")
-    return path.contains(userHomepath) &&
-            path.startsWith(userHomepath + File.separator) &&
-            path.replace(userHomepath + File.separator, "")
+    val userHomePath = System.getProperty("user.home")
+    return path.contains(userHomePath) &&
+            path.startsWith(userHomePath + File.separator) &&
+            path.replace(userHomePath + File.separator, "")
                     .startsWith(".")
 }
 
