@@ -8,12 +8,14 @@ import com.cheroliv.util.App.Companion.LOCATE_CMD_FILEPATH
 import org.apache.commons.lang3.StringUtils
 import java.io.File
 import kotlin.text.Charsets.UTF_8
-
+// pass password for sudo command
+// echo mypassword | sudo -S command
 class App {
     companion object {
+        // locate *node_modules  > node_modules_file_paths.txt
         const val LOCATE_CMD_FILEPATH = "src/test/resources/node_modules_file_paths.txt"
         const val MOTIF_FILENAME = "node_modules"
-        val KEEP = arrayOf("/home/cheroliv/src/deleteDir/build")
+        val KEEP = arrayOf("${System.getProperty("user.home")}/src/deleteDir/build")
     }
 }
 
@@ -26,11 +28,9 @@ fun main() {
     deleteFiles(filteredPaths)
 }
 
-// pass password for sudo command
-// echo mypassword | sudo -S command
-//
-// find ~ -type d -name node_modules
-// locate *node_modules  > node_modules_file_paths.txt
+/**
+ * find ~ -type d -name node_module
+ */
 fun findFile(path: String, motif: String): Sequence<String> {
     return find(INSTANCE.d, path, motif).toString().lineSequence()
 }

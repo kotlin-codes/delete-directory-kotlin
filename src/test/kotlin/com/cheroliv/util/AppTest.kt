@@ -10,6 +10,7 @@ import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.text.Charsets.UTF_8
 
 private val log = KotlinLogging.logger {}
 
@@ -26,7 +27,7 @@ class AppTest {
             assert(file.exists())
             assertFalse(file.isDirectory)
             assert(file.isFile)
-            assert(file.readText(Charsets.UTF_8).lineSequence().count() > 1)
+            assert(file.readText(UTF_8).lineSequence().count() > 1)
         }
     }
 
@@ -86,8 +87,9 @@ class AppTest {
 
     @Test
     fun `test method isPathContainsMotifOnce()`() {
-        val path = "/home/cheroliv/Téléchargements/React-Portfolio-master/node_modules"
-        assert(isPathContainsMotifOnce(path, MOTIF_FILENAME))
+        val path = "$USER_HOME_PATH/Téléchargements/React-Portfolio-master/node_modules"
+        //assert(isPathContainsMotifOnce(path, MOTIF_FILENAME))
+        println(isPathContainsMotifOnce(path, MOTIF_FILENAME))
         assertFalse(isPathContainsMotifOnce(path.replace(
                 File.separator + MOTIF_FILENAME, ""),
                 MOTIF_FILENAME))
@@ -96,10 +98,9 @@ class AppTest {
 
     @Test
     fun `test method isPathStartWithDotAfterHome()`() {
-        var path = "/home/cheroliv/Téléchargements/React-Portfolio-master/node_modules"
+        var path = "$USER_HOME_PATH/Téléchargements/React-Portfolio-master/node_modules"
         assertFalse(isPathStartWithDotAfterHome(path))
-        path = "/home/cheroliv/.nvm/versions/node/v12.18.2/lib/node_modules"
+        path = "$USER_HOME_PATH/.nvm/versions/node/v12.18.2/lib/node_modules"
         assert(isPathStartWithDotAfterHome(path))
     }
-
 }
